@@ -2,6 +2,7 @@
 Repositório relacionado ao desenvolvimento do projeto de Programação orientada a objetos
 
 CREATE TABLE filmes (
+
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(100),
     genero VARCHAR(50),
@@ -11,6 +12,7 @@ CREATE TABLE filmes (
 );
 
 CREATE TABLE favoritos (
+
     usuario_id INT,
     filme_id INT,
 
@@ -21,6 +23,7 @@ CREATE TABLE favoritos (
 );
 
 CREATE TABLE lista_reproducao (
+
     usuario_id INT,
     filme_id INT,
 
