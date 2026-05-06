@@ -32,3 +32,15 @@ CREATE TABLE lista_reproducao (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (filme_id) REFERENCES filmes(id)
 );
+
+INSERT INTO filmes (titulo, genero, duracao, ano)VALUES
+
+('Vingadores: Ultimato', 'Ação', '181min', 2019),
+('Batman', 'Ação', '176min', 2022),
+('Interestelar', 'Ficção', '169min', 2014),
+('Matrix', 'Ficção', '136min', 1999),
+('Coringa', 'Drama', '122min', 2019),
+('Titanic', 'Romance', '195min', 1997),
+('Avatar', 'Ficção', '162min', 2009),
+('John Wick', 'Ação', '101min', 2014),
+('Toy Story', 'Animação', '81min', 1995);
