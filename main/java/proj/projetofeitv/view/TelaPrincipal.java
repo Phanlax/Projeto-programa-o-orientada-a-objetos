@@ -7,14 +7,14 @@ package proj.projetofeitv.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import proj.projetofeitv.controller.ControllerFilme;
 import proj.projetofeitv.controller.ControllerNavegacao;
+import proj.projetofeitv.model.Filme;
 
 /**
  *
@@ -22,40 +22,39 @@ import proj.projetofeitv.controller.ControllerNavegacao;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 private ControllerNavegacao nav;
+private ControllerFilme controller;
     /**
      * Creates new form TelaPrincipal
      */
     public TelaPrincipal(ControllerNavegacao nav) {
         this.nav = nav;
         initComponents();
+        controller = new ControllerFilme();
         painelConteudo.setLayout(new GridLayout(0, 3, 10, 10));
         carregarCards();
     }
 private void carregarCards() {
-
+    
     painelConteudo.removeAll(); 
+    List<Filme> filmes = controller.buscarFilmes();
 
-    for (int i = 1; i <= 10; i++) {
+    for (Filme f : filmes) {
 
-        JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(100, 150));
-        card.setBackground(new Color(60, 60, 60));
-        card.setBorder(javax.swing.BorderFactory.createLineBorder(Color.BLACK));
+            JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
+        card.setBackground(new Color(60, 60, 60));
 
-        //  Título dos filmes
-        JLabel titulo = new JLabel("Filme " + i, SwingConstants.CENTER);
+        // coloca o titulo
+        JLabel titulo = new JLabel(f.getTitulo(), JLabel.CENTER);
         titulo.setForeground(Color.WHITE);
-        titulo.setFont(new Font("Arial", Font.BOLD, 14));
 
-        //  informaçoes dos filmes
-        JPanel info = new JPanel();
-        info.setLayout(new GridLayout(3,1));
+        //  informações dos filmes
+        JPanel info = new JPanel(new GridLayout(3, 1));
         info.setBackground(new Color(60, 60, 60));
 
-        JLabel duracao = new JLabel("Duração: 120min");
-        JLabel genero = new JLabel("Gênero: Ação");
-        JLabel ano = new JLabel("Ano: 2024");
+        JLabel duracao = new JLabel("Duração: " + f.getDuracao());
+        JLabel genero = new JLabel("Gênero: " + f.getGenero());
+        JLabel ano = new JLabel("Ano: " + f.getAno());
 
         duracao.setForeground(Color.WHITE);
         genero.setForeground(Color.WHITE);
@@ -65,26 +64,20 @@ private void carregarCards() {
         info.add(genero);
         info.add(ano);
 
-        //  botao de curtida,sem salvar no banco de dados
+        // botão de curtida ainda sem banco de dados
         JPanel rodape = new JPanel();
-        rodape.setBackground(new Color(60, 60, 60));
-
         JButton btnCurtir = new JButton("❤️");
         JLabel curtidas = new JLabel("0");
 
-        curtidas.setForeground(Color.WHITE);
-
-         
         btnCurtir.addActionListener(e -> {
             int valor = Integer.parseInt(curtidas.getText());
-            valor++;
-            curtidas.setText(String.valueOf(valor));
+            curtidas.setText(String.valueOf(valor + 1));
         });
 
         rodape.add(btnCurtir);
         rodape.add(curtidas);
 
-        // 🔗 Montagem
+        // �
         card.add(titulo, BorderLayout.NORTH);
         card.add(info, BorderLayout.CENTER);
         card.add(rodape, BorderLayout.SOUTH);
