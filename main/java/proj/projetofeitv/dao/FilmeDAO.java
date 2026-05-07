@@ -33,6 +33,7 @@ public FilmeDAO(Connection conn) {
 
     while (rs.next()) {
         Filme f = new Filme();
+        f.setId(rs.getInt("id"));
         f.setTitulo(rs.getString("titulo"));
         f.setGenero(rs.getString("genero"));
         f.setDuracao(rs.getString("duracao"));
