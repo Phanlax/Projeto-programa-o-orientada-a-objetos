@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package proj.projetofeitv.controller;
+import proj.projetofeitv.model.Usuario;
 import proj.projetofeitv.view.TelaCadastro;
+import proj.projetofeitv.view.TelaFavoritos;
 import proj.projetofeitv.view.TelaLogin;
 import proj.projetofeitv.view.TelaPrincipal;
 /**
@@ -14,6 +16,7 @@ public class ControllerNavegacao {
     private TelaLogin telaLogin;
     private TelaCadastro telaCadastro;
     private TelaPrincipal telaPrincipal;
+    private TelaFavoritos telaFavoritos;
 
     public void iniciar() {
         telaLogin = new TelaLogin(this);
@@ -40,5 +43,37 @@ public class ControllerNavegacao {
     telaPrincipal = new TelaPrincipal(this);
     telaPrincipal.setVisible(true);
 }
+    public void voltarLoginPrincipal() {
+       telaPrincipal.dispose();
 
+        telaLogin = new TelaLogin(this);
+        telaLogin.setVisible(true);
+    }
+  
+    
+    public void abrirFavoritos() {
+        telaPrincipal.dispose();
+        
+        telaFavoritos = new TelaFavoritos(this);
+        telaFavoritos.setVisible(true);
+    }
+    
+    public void voltaPrincipalFavoritos(){
+        telaFavoritos.dispose();
+        
+        telaPrincipal = new TelaPrincipal(this);
+        telaPrincipal.setVisible(true);
+    
+    }
+            
+            
+private Usuario usuarioLogado;
+
+public Usuario getUsuarioLogado() {
+    return usuarioLogado;
+}
+
+public void setUsuarioLogado(Usuario usuario) {
+    this.usuarioLogado = usuario;
+    }
 }
