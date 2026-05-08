@@ -1,6 +1,14 @@
 # Projeto-programa-o-orientada-a-objetos
 Repositório relacionado ao desenvolvimento do projeto de Programação orientada a objetos
 
+CREATE TABLE usuarios (
+
+    id SERIAL PRIMARY KEY,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    senha VARCHAR(100) NOT NULL
+);
+
+
 CREATE TABLE filmes (
 
     id SERIAL PRIMARY KEY,
@@ -32,8 +40,8 @@ CREATE TABLE lista_reproducao (
     FOREIGN KEY (filme_id) REFERENCES filmes(id)
 );
 
-INSERT INTO filmes (titulo, genero, duracao, ano)VALUES
-
+INSERT INTO filmes (titulo, genero, duracao, ano)
+VALUES
 ('Vingadores: Ultimato', 'Ação', '181min', 2019),
 ('Batman', 'Ação', '176min', 2022),
 ('Interestelar', 'Ficção', '169min', 2014),
