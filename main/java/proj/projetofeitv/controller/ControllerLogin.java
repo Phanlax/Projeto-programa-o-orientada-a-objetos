@@ -17,12 +17,15 @@ import proj.projetofeitv.view.TelaLogin;
 public class ControllerLogin {
     private TelaLogin view;
     private ControllerNavegacao nav;
-
+  
+    
+    
     public ControllerLogin(TelaLogin view, ControllerNavegacao nav) {
         this.view = view;
         this.nav = nav;
     }
 
+    //função de login
     public void login() {
 
     String usuario = view.getUsuario();
@@ -37,10 +40,11 @@ public class ControllerLogin {
 
         UsuarioDAO dao = new UsuarioDAO(conn);
 
-        Usuario usuarioLogado = dao.login(usuario, senha); 
+        Usuario usuarioLogado = dao.login(usuario, senha); // 🔥 MUDOU AQUI
 
         if (usuarioLogado != null) {
-
+            nav.setUsuarioLogado(usuarioLogado);
+            
             view.mostrarMensagem("Login realizado com sucesso!");
 
             
@@ -58,3 +62,4 @@ public class ControllerLogin {
     }
   }
 }
+
