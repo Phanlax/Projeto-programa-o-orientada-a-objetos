@@ -9,6 +9,15 @@ package proj.projetofeitv.model;
  * @author Gustavo
  */
 public class Filme {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     private String titulo;
     private String genero;
     private String duracao;
@@ -45,7 +54,5 @@ public class Filme {
     public void setAno(int ano) {
         this.ano = ano;
     }
-    
-    
     
 }
