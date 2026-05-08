@@ -19,7 +19,7 @@ public class UsuarioDAO {
     public UsuarioDAO(Connection conn) {
         this.conn = conn;
     }
-
+    //função de inserir os dados do usuario no banco de dados
     public void inserir(Usuario usuario) throws SQLException {
 
         String sql = "INSERT INTO usuarios (usuario, senha) VALUES (?, ?)";
@@ -35,8 +35,8 @@ public class UsuarioDAO {
         statement.close();
         
     }
-    
-    public boolean existeUsuario(String usuario, String senha) throws SQLException {
+       // função que efetua o login do usuario
+   public Usuario login(String usuario, String senha) throws SQLException {
 
     String sql = "SELECT * FROM usuarios WHERE usuario = ? AND senha = ?";
 
@@ -46,6 +46,17 @@ public class UsuarioDAO {
 
     var rs = stmt.executeQuery();
 
-    return rs.next();
+    if (rs.next()) {
+        Usuario u = new Usuario(
+            rs.getString("usuario"),
+            rs.getString("senha")
+        );
+
+        u.setId(rs.getInt("id")); //retorna o id
+
+        return u;
+    }
+
+    return null;
 }
 }
