@@ -43,7 +43,9 @@ CREATE TABLE lista_reproducao (
 INSERT INTO filmes (titulo, genero, duracao, ano)
 VALUES
 ('Vingadores: Ultimato', 'Ação', '181min', 2019),
+
 ('Batman', 'Ação', '176min', 2022),
+
 ('Interestelar', 'Ficção', '169min', 2014),
 ('Matrix', 'Ficção', '136min', 1999),
 ('Coringa', 'Drama', '122min', 2019),
