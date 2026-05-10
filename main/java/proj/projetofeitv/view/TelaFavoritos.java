@@ -8,6 +8,7 @@ package proj.projetofeitv.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JButton;
@@ -22,14 +23,14 @@ import proj.projetofeitv.model.Filme;
  * @author Gustavo
  */
 public class TelaFavoritos extends javax.swing.JFrame {
-  private ControllerNavegacao nav;
+    private ControllerNavegacao nav;
     private ControllerFilme controller;
 
     public TelaFavoritos(ControllerNavegacao nav) {
         this.nav = nav;
         initComponents();
         controller = new ControllerFilme();
-        painelConteudo.setLayout(new GridLayout(0, 3, 10, 10));
+        painelConteudo.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         carregarCards();
     }
 
@@ -45,7 +46,7 @@ public class TelaFavoritos extends javax.swing.JFrame {
 
         // formato do card
         JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(160, 250));
+        card.setPreferredSize(new Dimension(240, 300));
         card.setLayout(new BorderLayout());
         card.setBackground(new Color(60, 60, 60));
 
@@ -72,39 +73,89 @@ public class TelaFavoritos extends javax.swing.JFrame {
              
             JPanel rodape = new JPanel();
 
-            
+            // verificadores de curtidas e favoritos
             int qtdCurtidas = controller.getCurtidas(f.getId());
-
+            
+            boolean curtiu =
+            controller.jaCurtiu(usuarioId, f.getId());
+            
+            boolean favoritado =
+            controller.jaFavoritou(usuarioId, f.getId());
+                  
+            
+            //cria os botões
+            // botão curtir
             JButton btnCurtir = new JButton("👍 " + qtdCurtidas);
-            JButton btnRemover = new JButton("Remover");
 
-            // 👍 ação curtir
+                btnCurtir.setOpaque(true);
+                btnCurtir.setBorderPainted(false);
+
+            if (curtiu) {
+                                        //azul mais claro
+                btnCurtir.setBackground(new Color(100, 180, 255));
+
+            } else {
+
+                btnCurtir.setBackground(null);
+            }
+            //ação do botão de curtir
             btnCurtir.addActionListener(e -> {
-                controller.curtir(usuarioId, f.getId());
 
-                int novasCurtidas = controller.getCurtidas(f.getId());
-                btnCurtir.setText("👍 " + novasCurtidas);
+            if (controller.jaCurtiu(usuarioId, f.getId())) {
+
+                controller.removerCurtida(usuarioId, f.getId());
+
+                btnCurtir.setBackground(null);
+
+            } else {
+
+                 controller.curtir(usuarioId, f.getId());
+
+                 btnCurtir.setBackground(new Color(100, 180, 255));
+            }
+
+             int novasCurtidas =
+                 controller.getCurtidas(f.getId());
+
+                 btnCurtir.setText("👍 " + novasCurtidas);
             });
 
-            // ❤️ ação favoritar
+            // cria o botão de remover
+            
+            JButton btnRemover = new JButton("Remover");
+            
+            //  ação do botão remover
             btnRemover.addActionListener(e -> {
 
                 controller.removerFavorito(usuarioId, f.getId());
     
                 carregarCards(); 
               });
-
+            
+            //cria o botão de lista   
+            JButton btnLista = new JButton("➕ Lista");
+            
+            // ação do botão de lista
+             btnLista.addActionListener(e -> {
+                 
+             controller.adicionarLista(usuarioId, f.getId());
+             
+            });
+            //adiciona os botões
             rodape.add(btnCurtir);
             rodape.add(btnRemover);
+            rodape.add(btnLista);
 
-            // MONTA CARD
+            // monta o card
             card.add(titulo, BorderLayout.NORTH);
             card.add(info, BorderLayout.CENTER);
             card.add(rodape, BorderLayout.SOUTH);
 
             painelConteudo.add(card);
         }
-
+        painelConteudo.setPreferredSize(
+            new Dimension(800, filmes.size() * 320)
+);
         painelConteudo.revalidate();
         painelConteudo.repaint();
     }
@@ -174,6 +225,11 @@ public class TelaFavoritos extends javax.swing.JFrame {
         });
 
         jButton2.setText("FAVORITOS");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         botaoSair.setText("SAIR");
         botaoSair.addActionListener(new java.awt.event.ActionListener() {
@@ -215,7 +271,7 @@ public class TelaFavoritos extends javax.swing.JFrame {
         painelConteudo.setLayout(painelConteudoLayout);
         painelConteudoLayout.setHorizontalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 733, Short.MAX_VALUE)
+            .addGap(0, 761, Short.MAX_VALUE)
         );
         painelConteudoLayout.setVerticalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,6 +285,11 @@ public class TelaFavoritos extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton3.setText("Lista de reprodução de favoritos");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout painelPrincipalLayout = new javax.swing.GroupLayout(painelPrincipal);
         painelPrincipal.setLayout(painelPrincipalLayout);
@@ -244,7 +305,7 @@ public class TelaFavoritos extends javax.swing.JFrame {
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane4))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 773, Short.MAX_VALUE))
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addGap(327, 327, 327)
                         .addComponent(jLabel2)
@@ -277,8 +338,17 @@ public class TelaFavoritos extends javax.swing.JFrame {
 
     private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
         // TODO add your handling code here:
-        nav.voltarLoginPrincipal();
+        nav.voltaLoginFavoritos();
     }//GEN-LAST:event_botaoSairActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        nav.abrirListaReproducao();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

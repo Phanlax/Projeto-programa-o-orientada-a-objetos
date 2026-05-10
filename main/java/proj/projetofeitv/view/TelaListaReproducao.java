@@ -22,11 +22,11 @@ import proj.projetofeitv.model.Filme;
  *
  * @author Gustavo
  */
-public class TelaPrincipal extends javax.swing.JFrame {
-  private ControllerNavegacao nav;
+public class TelaListaReproducao extends javax.swing.JFrame {
+    private ControllerNavegacao nav;
     private ControllerFilme controller;
 
-    public TelaPrincipal(ControllerNavegacao nav) {
+    public TelaListaReproducao(ControllerNavegacao nav) {
         this.nav = nav;
         initComponents();
         controller = new ControllerFilme();
@@ -34,26 +34,27 @@ public class TelaPrincipal extends javax.swing.JFrame {
         carregarCards();
     }
 
-    private void carregarCards(List<Filme> filmes) {
+    private void carregarCards() {
 
         painelConteudo.removeAll();
-        
-
-        // pega o id do usuario que esta logado
         int usuarioId = nav.getUsuarioLogado().getId();
+
+        List<Filme> filmes = controller.buscarListaReproducao(usuarioId);
+        
 
         for (Filme f : filmes) {
 
-            JPanel card = new JPanel();
-            card.setPreferredSize(new Dimension(240, 300));
-            card.setLayout(new BorderLayout());
-            card.setBackground(new Color(60, 60, 60));
+        // formato do card
+        JPanel card = new JPanel();
+        card.setPreferredSize(new Dimension(160, 250));
+        card.setLayout(new BorderLayout());
+        card.setBackground(new Color(60, 60, 60));
 
-            // titulo dos filmes
+            
             JLabel titulo = new JLabel(f.getTitulo(), JLabel.CENTER);
             titulo.setForeground(Color.WHITE);
 
-            // informações dos filmes
+            
             JPanel info = new JPanel(new GridLayout(3, 1));
             info.setBackground(new Color(60, 60, 60));
 
@@ -69,20 +70,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
             info.add(genero);
             info.add(ano);
 
-            // cria a area dos botões
+             
             JPanel rodape = new JPanel();
 
-            // pega a curtidas do banco de dados e se ja favoritou
-            int qtdCurtidas = controller.getCurtidas(f.getId());
+            
+            // verificadores de curtidas 
+            int qtdCurtidas = controller.getCurtidas(f.getId());         
             boolean curtiu =
             controller.jaCurtiu(usuarioId, f.getId());
-            boolean favoritado =
-            controller.jaFavoritou(usuarioId, f.getId());
-            
+
             //cria os botões
             // botão curtir
-            JButton btnCurtir =
-            new JButton("👍 " + qtdCurtidas);
+            JButton btnCurtir = new JButton("👍 " + qtdCurtidas);
 
                 btnCurtir.setOpaque(true);
                 btnCurtir.setBorderPainted(false);
@@ -95,8 +94,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
                 btnCurtir.setBackground(null);
             }
-            
-            // ação do botão de curtir
+            //ação do botão de curtir
             btnCurtir.addActionListener(e -> {
 
             if (controller.jaCurtiu(usuarioId, f.getId())) {
@@ -117,72 +115,37 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
                  btnCurtir.setText("👍 " + novasCurtidas);
             });
+
+
+            // cria o botão remover
+            JButton btnRemover = new JButton("Remover");
             
-            
-            //botão favoritar
-            JButton btnFavorito = new JButton("❤️");
+            //ação do botão remover
+            btnRemover.addActionListener(e -> {
 
-                if (favoritado) {
-                                              //vermelho mais claro
-                  btnFavorito.setBackground(new Color(220, 60, 60));
+            controller.removerLista(usuarioId, f.getId());
 
-                } else {
-
-                  btnFavorito.setBackground(null);
-                }
-                
-            
-
-            // ação do botão de favoritar
-            btnFavorito.addActionListener(e -> {
-
-            if (controller.jaFavoritou(usuarioId, f.getId())) {
-
-                    controller.removerFavorito(usuarioId, f.getId());
-
-                    btnFavorito.setBackground(null);
-
-            } else {
-
-                    controller.favoritar(usuarioId, f.getId());
-
-                    btnFavorito.setBackground(new Color(220, 60, 60));
-                    }
+                carregarCards();
             });
+            
 
             rodape.add(btnCurtir);
-            rodape.add(btnFavorito);
+            rodape.add(btnRemover);
 
-            // monta o card dos filmes
+            // monta o card
             card.add(titulo, BorderLayout.NORTH);
             card.add(info, BorderLayout.CENTER);
             card.add(rodape, BorderLayout.SOUTH);
 
             painelConteudo.add(card);
         }
-    painelConteudo.setPreferredSize(
-        new Dimension(800, filmes.size() * 320)
-        );
+            painelConteudo.setPreferredSize(
+            new Dimension(800, filmes.size() * 320)
+                     );
+            
         painelConteudo.revalidate();
         painelConteudo.repaint();
     }
-    
-    private void carregarCards() {
-
-        List<Filme> filmes = controller.buscarFilmes();
-
-        carregarCards(filmes);
-    }
-    
-    private void pesquisar() {
-
-          String texto = caixaBusca.getText();
-
-    List<Filme> filmes = controller.pesquisarFilmes(texto);
-
-    carregarCards(filmes);
-    }
-    
 
     
 
@@ -207,7 +170,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         botaoSair = new javax.swing.JButton();
         painelPrincipal = new javax.swing.JPanel();
-        caixaBusca = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         painelConteudo = new javax.swing.JPanel();
@@ -233,8 +195,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jPanel3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 1000));
-        setPreferredSize(new java.awt.Dimension(950, 852));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 3));
         jScrollPane1.setViewportView(jPanel2);
@@ -290,19 +250,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
 
-        caixaBusca.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                caixaBuscaActionPerformed(evt);
-            }
-        });
-        caixaBusca.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                caixaBuscaKeyReleased(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Catálogo");
+        jLabel1.setText("Lista de reprodução de favoritos:");
 
         javax.swing.GroupLayout painelConteudoLayout = new javax.swing.GroupLayout(painelConteudo);
         painelConteudo.setLayout(painelConteudoLayout);
@@ -312,7 +261,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         );
         painelConteudoLayout.setVerticalGroup(
             painelConteudoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 536, Short.MAX_VALUE)
+            .addGap(0, 538, Short.MAX_VALUE)
         );
 
         jScrollPane4.setViewportView(painelConteudo);
@@ -326,21 +275,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
             painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelPrincipalLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(painelPrincipalLayout.createSequentialGroup()
                 .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane4))
                     .addGroup(painelPrincipalLayout.createSequentialGroup()
-                        .addGroup(painelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(painelPrincipalLayout.createSequentialGroup()
-                                .addGap(225, 225, 225)
-                                .addComponent(caixaBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(painelPrincipalLayout.createSequentialGroup()
-                                .addGap(327, 327, 327)
-                                .addComponent(jLabel2)))
+                        .addGap(327, 327, 327)
+                        .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -349,12 +293,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
             .addGroup(painelPrincipalLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(caixaBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(58, 58, 58)
                 .addComponent(jLabel1)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane4)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -365,6 +307,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        nav.voltaPrincipalLista();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void botaoSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSairActionPerformed
@@ -374,18 +317,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        nav.abrirFavoritos();
+        nav.voltaFavoritosLista();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void caixaBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaBuscaActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_caixaBuscaActionPerformed
-
-    private void caixaBuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caixaBuscaKeyReleased
-        // TODO add your handling code here:
-         pesquisar();
-    }//GEN-LAST:event_caixaBuscaKeyReleased
 
     /**
      * @param args the command line arguments
@@ -404,14 +337,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaListaReproducao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaListaReproducao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaListaReproducao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaListaReproducao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -424,7 +360,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoSair;
-    private javax.swing.JTextField caixaBusca;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
