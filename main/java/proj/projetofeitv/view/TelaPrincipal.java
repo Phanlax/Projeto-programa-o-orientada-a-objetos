@@ -379,12 +379,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void caixaBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caixaBuscaActionPerformed
         // TODO add your handling code here:
-        
+        pesquisar();
     }//GEN-LAST:event_caixaBuscaActionPerformed
 
     private void caixaBuscaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_caixaBuscaKeyReleased
         // TODO add your handling code here:
-         pesquisar();
+         
     }//GEN-LAST:event_caixaBuscaKeyReleased
 
     /**
