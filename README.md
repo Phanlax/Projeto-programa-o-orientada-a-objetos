@@ -1,4 +1,4 @@
-🎬 ProjetoFeitv
+#🎬 ProjetoFeitv
 
 Sistema desktop de filmes desenvolvido em Java com interface gráfica Swing e banco de dados PostgreSQL.
 
@@ -112,8 +112,6 @@ Integração Java + PostgreSQL
 👨‍💻 Autor
 
 Desenvolvido por Gustavo Santos.
-# Projeto-programação-orientada-a-objetos
-Repositório relacionado ao desenvolvimento do projeto de Programação orientada a objetos
 
 CREATE TABLE usuarios (
 
