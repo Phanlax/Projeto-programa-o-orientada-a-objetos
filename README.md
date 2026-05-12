@@ -93,20 +93,52 @@ O mesmo processo ocorre na tela de lista de reprodução dos favoritos. Os filme
 
 A maior diferença visual entre as telas está nos botões presentes no rodapé dos cards. Na tela de favoritos existem os botões de curtir, remover dos favoritos e adicionar à lista de reprodução. Já na tela da lista de reprodução, os botões disponíveis são o de curtir e o de remover da lista.
 
-### 📌 Exemplo da tabela filmes
+### 📌 Exemplos da  criaçãos das tabela 
+CREATE TABLE usuarios (
+
+id SERIAL PRIMARY KEY,
+usuario VARCHAR(50) UNIQUE NOT NULL,
+senha VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE filmes (
-    
-    id SERIAL PRIMARY KEY,
 
-    titulo VARCHAR(100) NOT NULL,
+id SERIAL PRIMARY KEY,
+titulo VARCHAR(100) NOT NULL,
+genero VARCHAR(50) NOT NULL,
+duracao VARCHAR(20) NOT NULL,
+ano INT NOT NULL,
+curtidas INT DEFAULT 0
+);
 
-    genero VARCHAR(50) NOT NULL,
+CREATE TABLE favoritos (
 
-    duracao VARCHAR(20) NOT NULL,
+usuario_id INT,
+filme_id INT,
 
-    ano INT NOT NULL,
+PRIMARY KEY (usuario_id, filme_id),
 
-    curtidas INT DEFAULT 0
+FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+FOREIGN KEY (filme_id) REFERENCES filmes(id)
+);
+
+CREATE TABLE lista_reproducao (
+
+usuario_id INT,
+filme_id INT,
+
+PRIMARY KEY (usuario_id, filme_id),
+
+FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+FOREIGN KEY (filme_id) REFERENCES filmes(id)
+);
+
+
+CREATE TABLE curtidas (
+
+usuario_id INT,
+filme_id INT,
+PRIMARY KEY (usuario_id, filme_id)
 );
 
 ## 👨‍💻 Autor
