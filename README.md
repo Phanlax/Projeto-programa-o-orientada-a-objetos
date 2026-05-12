@@ -70,7 +70,28 @@ O sistema utiliza:
 ### Diagrama de classes
 <img width="1000" height="715" alt="image" src="https://github.com/user-attachments/assets/3446062e-df28-47d8-bd01-b53834efbd90" />
 
+## Explicação do Funcionamento    
+### Cadastro e Login
+O cadastro do usuário é realizado através da tela de cadastro. Ao clicar no botão “Cadastrar”, uma função é iniciada para salvar as informações do usuário no banco de dados utilizando SQL. Durante esse processo, também é criado automaticamente um ID único para o usuário, que será utilizado nas demais tabelas do sistema para relacionar suas informações.
 
+O login funciona verificando os dados inseridos com as informações armazenadas no banco de dados. Caso o usuário não exista ou tenha digitado alguma informação incorretamente, o sistema exibirá uma mensagem de erro no login.
+
+### Tela do Catálogo
+A tela do catálogo, ou “Tela Principal”, funciona buscando as informações dos filmes diretamente do banco de dados e armazenando esses dados em uma lista. A partir dessas informações, são criados “cards”, que funcionam como pequenos painéis de exibição dos filmes.
+
+Esses cards são construídos por meio de código diretamente na View do JFrame e são divididos em duas partes principais: o painel de informações do filme e o painel de rodapé. No painel do filme são exibidas informações como título, gênero, duração e ano, enquanto no rodapé são criados os botões de curtir e adicionar aos favoritos.
+
+O botão de curtir executa uma função que adiciona o ID do usuário logado e o ID do filme curtido na tabela curtidas do banco de dados. O mesmo processo ocorre com o botão de favoritos, porém os IDs são armazenados na tabela favoritos.
+
+### Tela de Favoritos e Lista de Reprodução dos Favoritos
+
+A parte visual da tela de favoritos e da tela de lista de reprodução funciona de forma semelhante à tela do catálogo principal. Os cards dos filmes são criados da mesma maneira, utilizando componentes gerados dinamicamente na View do JFrame. A principal diferença está na origem das informações exibidas.
+
+Na tela de favoritos, quando o usuário clica no botão de favoritar na tela principal, o ID do usuário e o ID do filme são armazenados na tabela favoritos do banco de dados. Ao abrir a página de favoritos, o ArrayList com as informações dos filmes é montado a partir dessa tabela, diferentemente da tela de catálogo, que exibe todos os filmes presentes na tabela filmes.
+
+O mesmo processo ocorre na tela de lista de reprodução dos favoritos. Os filmes exibidos nos cards são carregados a partir da tabela lista_reproducao, que armazena os filmes adicionados pelo usuário para assistir mais tarde.
+
+A maior diferença visual entre as telas está nos botões presentes no rodapé dos cards. Na tela de favoritos existem os botões de curtir, remover dos favoritos e adicionar à lista de reprodução. Já na tela da lista de reprodução, os botões disponíveis são o de curtir e o de remover da lista.
 
 ### 📌 Exemplo da tabela filmes
 CREATE TABLE filmes (
