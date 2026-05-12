@@ -94,13 +94,14 @@ O mesmo processo ocorre na tela de lista de reprodução dos favoritos. Os filme
 A maior diferença visual entre as telas está nos botões presentes no rodapé dos cards. Na tela de favoritos existem os botões de curtir, remover dos favoritos e adicionar à lista de reprodução. Já na tela da lista de reprodução, os botões disponíveis são o de curtir e o de remover da lista.
 
 ### 📌 Exemplos da  criaçãos das tabela 
+'''sql
 CREATE TABLE usuarios (
 
 id SERIAL PRIMARY KEY,
 usuario VARCHAR(50) UNIQUE NOT NULL,
 senha VARCHAR(100) NOT NULL
 );
-
+'''
 CREATE TABLE filmes (
 
 id SERIAL PRIMARY KEY,
