@@ -43,8 +43,6 @@ public class ControllerCadastro {
         dao.inserir(usuario);
 
         view.mostrarMensagem("Usuário cadastrado com sucesso!");
-
-        
          nav.voltarLogin();
 
     } catch (SQLException e) {
