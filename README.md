@@ -93,6 +93,24 @@ O mesmo processo ocorre na tela de lista de reprodução dos favoritos. Os filme
 
 A maior diferença visual entre as telas está nos botões presentes no rodapé dos cards. Na tela de favoritos existem os botões de curtir, remover dos favoritos e adicionar à lista de reprodução. Já na tela da lista de reprodução, os botões disponíveis são o de curtir e o de remover da lista.
 
+## ▶️ Como Executar
+- Clonar o repositório
+- git clone SEU_LINK_GITHUB
+
+- Criar banco PostgreSQL
+- Crie um banco chamado:
+Projeto
+
+- Executar os scripts SQL
+- Crie as tabelas necessárias no PostgreSQL.
+
+### Configurar conexão
+No arquivo de conexão JDBC, configure:
+
+- url usuario senha 5. Executar o projeto
+
+- Abra no Apache NetBeans e execute a aplicação.
+
 ### 📌 Exemplos da  criaçãos das tabela 
 ```sql
 CREATE TABLE usuarios (
