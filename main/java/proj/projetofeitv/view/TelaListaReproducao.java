@@ -34,118 +34,92 @@ public class TelaListaReproducao extends javax.swing.JFrame {
         carregarCards();
     }
 
-    private void carregarCards() {
+    public void carregarCards() {
 
-        painelConteudo.removeAll();
-        int usuarioId = nav.getUsuarioLogado().getId();
+    painelConteudo.removeAll();
+    int usuarioId = nav.getUsuarioLogado().getId();
 
-        List<Filme> filmes = controller.buscarListaReproducao(usuarioId);
-        
+    List<Filme> filmes = controller.buscarListaReproducao(usuarioId);
 
-        for (Filme f : filmes) {
+    for (Filme f : filmes) {
 
-        // formato do card
+        // card
         JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(160, 250));
+        card.setPreferredSize(new Dimension(160, 250)
+        );
         card.setLayout(new BorderLayout());
-        card.setBackground(new Color(60, 60, 60));
+        card.setBackground(new Color(60, 60, 60)
+        );
+        // titulo
+        JLabel titulo = new JLabel(f.getTitulo(),JLabel.CENTER
+            );
+        titulo.setForeground(Color.WHITE);
 
-            
-            JLabel titulo = new JLabel(f.getTitulo(), JLabel.CENTER);
-            titulo.setForeground(Color.WHITE);
+        // informações
+        JPanel info = new JPanel(new GridLayout(3, 1));
+        info.setBackground(new Color(60, 60, 60)
+        );
+        JLabel duracao = new JLabel("Duração: " + f.getDuracao()
+            );
+        JLabel genero = new JLabel("Gênero: " + f.getGenero()
+        );  
+        JLabel ano = new JLabel("Ano: " + f.getAno()
+        );
+        duracao.setForeground(Color.WHITE);
+        genero.setForeground(Color.WHITE);
+        ano.setForeground(Color.WHITE);
 
-            
-            JPanel info = new JPanel(new GridLayout(3, 1));
-            info.setBackground(new Color(60, 60, 60));
+        info.add(duracao);
+        info.add(genero);
+        info.add(ano);
 
-            JLabel duracao = new JLabel("Duração: " + f.getDuracao());
-            JLabel genero = new JLabel("Gênero: " + f.getGenero());
-            JLabel ano = new JLabel("Ano: " + f.getAno());
+        // rodapé
+        JPanel rodape = new JPanel();
+        // curtidas
+        int qtdCurtidas = controller.getCurtidas(f.getId());
+        // botões
+        JButton btnCurtir = new JButton("👍 " + qtdCurtidas);
+        JButton btnRemover = new JButton("Remover");
+        btnCurtir.setOpaque(true);
+        btnCurtir.setBorderPainted(false);
 
-            duracao.setForeground(Color.WHITE);
-            genero.setForeground(Color.WHITE);
-            ano.setForeground(Color.WHITE);
+        // aparência botão curtir
+        controller.atualizarVisualCurtida(
+            usuarioId,
+            f.getId(),
+            btnCurtir
+        );
+        // ação curtir
+        btnCurtir.addActionListener(e -> {
+            controller.acaoCurtir(
+                usuarioId,
+                f,
+                btnCurtir
+            );
+        });
+        // ação remover lista
+        btnRemover.addActionListener(e -> {
+            controller.acaoRemoverLista(
+                usuarioId,
+                f,
+                this
+            );
+        });
+        // adiciona botões
+        rodape.add(btnCurtir);
+        rodape.add(btnRemover);
+        // monta card
+        card.add(titulo, BorderLayout.NORTH);
+        card.add(info, BorderLayout.CENTER);
+        card.add(rodape, BorderLayout.SOUTH);
 
-            info.add(duracao);
-            info.add(genero);
-            info.add(ano);
-
-             
-            JPanel rodape = new JPanel();
-
-            
-            // verificadores de curtidas 
-            int qtdCurtidas = controller.getCurtidas(f.getId());         
-            boolean curtiu =
-            controller.jaCurtiu(usuarioId, f.getId());
-
-            //cria os botões
-            // botão curtir
-            JButton btnCurtir = new JButton("👍 " + qtdCurtidas);
-
-                btnCurtir.setOpaque(true);
-                btnCurtir.setBorderPainted(false);
-
-            if (curtiu) {
-                                        //azul mais claro
-                btnCurtir.setBackground(new Color(100, 180, 255));
-
-            } else {
-
-                btnCurtir.setBackground(null);
-            }
-            //ação do botão de curtir
-            btnCurtir.addActionListener(e -> {
-
-            if (controller.jaCurtiu(usuarioId, f.getId())) {
-
-                controller.removerCurtida(usuarioId, f.getId());
-
-                btnCurtir.setBackground(null);
-
-            } else {
-
-                 controller.curtir(usuarioId, f.getId());
-
-                 btnCurtir.setBackground(new Color(100, 180, 255));
-            }
-
-             int novasCurtidas =
-                 controller.getCurtidas(f.getId());
-
-                 btnCurtir.setText("👍 " + novasCurtidas);
-            });
-
-
-            // cria o botão remover
-            JButton btnRemover = new JButton("Remover");
-            
-            //ação do botão remover
-            btnRemover.addActionListener(e -> {
-
-            controller.removerLista(usuarioId, f.getId());
-
-                carregarCards();
-            });
-            
-
-            rodape.add(btnCurtir);
-            rodape.add(btnRemover);
-
-            // monta o card
-            card.add(titulo, BorderLayout.NORTH);
-            card.add(info, BorderLayout.CENTER);
-            card.add(rodape, BorderLayout.SOUTH);
-
-            painelConteudo.add(card);
-        }
-            painelConteudo.setPreferredSize(
-            new Dimension(800, filmes.size() * 320)
-                     );
-            
-        painelConteudo.revalidate();
-        painelConteudo.repaint();
+        painelConteudo.add(card);
     }
+    painelConteudo.setPreferredSize(new Dimension(800, filmes.size() * 320)
+    );
+    painelConteudo.revalidate();
+    painelConteudo.repaint();
+}
 
     
 

@@ -34,143 +34,117 @@ public class TelaPrincipal extends javax.swing.JFrame {
         carregarCards();
     }
 
-    private void carregarCards(List<Filme> filmes) {
+    public void carregarCards(List<Filme> filmes) {
 
-        painelConteudo.removeAll();
-        
+    painelConteudo.removeAll();
 
-        // pega o id do usuario que esta logado
-        int usuarioId = nav.getUsuarioLogado().getId();
+    // pega o id do usuario logado
+    int usuarioId = nav.getUsuarioLogado().getId();
 
-        for (Filme f : filmes) {
+    for (Filme f : filmes) {
 
-            JPanel card = new JPanel();
-            card.setPreferredSize(new Dimension(240, 300));
-            card.setLayout(new BorderLayout());
-            card.setBackground(new Color(60, 60, 60));
+        JPanel card = new JPanel();
+        card.setPreferredSize(new Dimension(240, 300));
+        card.setLayout(new BorderLayout());
+        card.setBackground(new Color(60, 60, 60));
 
-            // titulo dos filmes
-            JLabel titulo = new JLabel(f.getTitulo(), JLabel.CENTER);
-            titulo.setForeground(Color.WHITE);
+        // titulo do filme
+        JLabel titulo = new JLabel(f.getTitulo(), JLabel.CENTER);
 
-            // informações dos filmes
-            JPanel info = new JPanel(new GridLayout(3, 1));
-            info.setBackground(new Color(60, 60, 60));
+        titulo.setForeground(Color.WHITE);
 
-            JLabel duracao = new JLabel("Duração: " + f.getDuracao());
-            JLabel genero = new JLabel("Gênero: " + f.getGenero());
-            JLabel ano = new JLabel("Ano: " + f.getAno());
+        // informações
+        JPanel info = new JPanel(new GridLayout(3, 1));
+        info.setBackground(new Color(60, 60, 60));
 
-            duracao.setForeground(Color.WHITE);
-            genero.setForeground(Color.WHITE);
-            ano.setForeground(Color.WHITE);
+        JLabel duracao = new JLabel("Duração: " + f.getDuracao());
+        JLabel genero = new JLabel("Gênero: " + f.getGenero());
+        JLabel ano = new JLabel("Ano: " + f.getAno());
 
-            info.add(duracao);
-            info.add(genero);
-            info.add(ano);
+        duracao.setForeground(Color.WHITE);
+        genero.setForeground(Color.WHITE);
+        ano.setForeground(Color.WHITE);
 
-            // cria a area dos botões
-            JPanel rodape = new JPanel();
+        info.add(duracao);
+        info.add(genero);
+        info.add(ano);
 
-            // pega a curtidas do banco de dados e se ja favoritou
-            int qtdCurtidas = controller.getCurtidas(f.getId());
-            boolean curtiu =
-            controller.jaCurtiu(usuarioId, f.getId());
-            boolean favoritado =
-            controller.jaFavoritou(usuarioId, f.getId());
-            
-            //cria os botões
-            // botão curtir
-            JButton btnCurtir =
-            new JButton("👍 " + qtdCurtidas);
+        // rodapé
+        JPanel rodape = new JPanel();
 
-                btnCurtir.setOpaque(true);
-                btnCurtir.setBorderPainted(false);
+        // quantidade de curtidas
+        int qtdCurtidas =
+            controller.getCurtidas(f.getId());
 
-            if (curtiu) {
-                                        //azul mais claro
-                btnCurtir.setBackground(new Color(100, 180, 255));
+        // botões
+        JButton btnCurtir = new JButton("👍 " + qtdCurtidas);
+        JButton btnFavorito = new JButton("❤️");
 
-            } else {
+        btnCurtir.setOpaque(true);
+        btnCurtir.setBorderPainted(false);
 
-                btnCurtir.setBackground(null);
-            }
-            
-            // ação do botão de curtir
-            btnCurtir.addActionListener(e -> {
-
-            if (controller.jaCurtiu(usuarioId, f.getId())) {
-                controller.removerCurtida(usuarioId, f.getId());
-                btnCurtir.setBackground(null);
-
-            } else {
-
-                 controller.curtir(usuarioId, f.getId());
-                 btnCurtir.setBackground(new Color(100, 180, 255));
-            }
-
-             int novasCurtidas =
-                 controller.getCurtidas(f.getId());
-                 btnCurtir.setText("👍 " + novasCurtidas);
-            });
-            
-            
-            //botão favoritar
-            JButton btnFavorito = new JButton("❤️");
-
-                if (favoritado) {             //vermelho mais claro                  
-                  btnFavorito.setBackground(new Color(220, 60, 60));
-                  
-                } else {
-                  btnFavorito.setBackground(null);
-                }
-                
-         
-            // ação do botão de favoritar
-            btnFavorito.addActionListener(e -> {
-
-            if (controller.jaFavoritou(usuarioId, f.getId())) {
-                    controller.removerFavorito(usuarioId, f.getId());
-                    btnFavorito.setBackground(null);
-
-            } else {
-                    controller.favoritar(usuarioId, f.getId());
-                    btnFavorito.setBackground(new Color(220, 60, 60));
-                    }
-            });
-
-            rodape.add(btnCurtir);
-            rodape.add(btnFavorito);
-
-            // monta o card dos filmes
-            card.add(titulo, BorderLayout.NORTH);
-            card.add(info, BorderLayout.CENTER);
-            card.add(rodape, BorderLayout.SOUTH);
-
-            painelConteudo.add(card);
-        }
-    painelConteudo.setPreferredSize(
-        new Dimension(800, filmes.size() * 320)
+        // deixa os botões com aparência correta
+        controller.atualizarVisualCurtida(
+            usuarioId,
+            f.getId(),
+            btnCurtir
         );
-        painelConteudo.revalidate();
-        painelConteudo.repaint();
-    }
-    
-    private void carregarCards() {
 
-        List<Filme> filmes = controller.buscarFilmes();
+        controller.atualizarVisualFavorito(
+            usuarioId,
+            f.getId(),
+            btnFavorito
+        );
 
-        carregarCards(filmes);
+        // ação curtir
+        btnCurtir.addActionListener(e -> {
+
+            controller.acaoCurtir(
+                usuarioId,
+                f,
+                btnCurtir
+            );
+        });
+
+        // ação favorito
+        btnFavorito.addActionListener(e -> {
+
+            controller.acaoFavorito(
+                usuarioId,
+                f,
+                btnFavorito
+            );
+        });
+
+        rodape.add(btnCurtir);
+        rodape.add(btnFavorito);
+
+        // monta card
+        card.add(titulo, BorderLayout.NORTH);
+        card.add(info, BorderLayout.CENTER);
+        card.add(rodape, BorderLayout.SOUTH);
+
+        painelConteudo.add(card);
     }
+
+    painelConteudo.setPreferredSize(new Dimension(800, filmes.size() * 320)
+    );
+
+    painelConteudo.revalidate();
+    painelConteudo.repaint();
+}
+
+private void carregarCards() {
+    List<Filme> filmes = controller.buscarFilmes();
+    carregarCards(filmes);
+}
     
     private void pesquisar() {
-
-          String texto = caixaBusca.getText();
-
-    List<Filme> filmes = controller.pesquisarFilmes(texto);
-
-    carregarCards(filmes);
-    }
+    controller.pesquisar(
+        caixaBusca,
+        this
+    );
+}
     
 
     
