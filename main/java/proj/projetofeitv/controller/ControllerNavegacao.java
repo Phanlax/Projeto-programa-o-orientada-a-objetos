@@ -19,6 +19,7 @@ public class ControllerNavegacao {
     private TelaPrincipal telaPrincipal;
     private TelaFavoritos telaFavoritos;
     private TelaListaReproducao telaListaReproducao;
+    
     //primeira tela
     public void iniciar() {
         telaLogin = new TelaLogin(this);
@@ -45,22 +46,7 @@ public class ControllerNavegacao {
     telaPrincipal = new TelaPrincipal(this);
     telaPrincipal.setVisible(true);
 }
-    //  Funções dos botões de sair 
-    public void voltaLoginFavoritos(){
-        telaFavoritos.dispose();
-        
-        telaLogin = new TelaLogin(this);
-        telaLogin.setVisible(true);
-    }
-    
-    public void voltarLoginPrincipal() {
-       telaPrincipal.dispose();
-
-        telaLogin = new TelaLogin(this);
-        telaLogin.setVisible(true);
-    }
   
-    
     public void abrirFavoritos() {
         telaPrincipal.dispose();
         
@@ -68,8 +54,6 @@ public class ControllerNavegacao {
         telaFavoritos.setVisible(true);
     }
     
-   
-    //sai da tela favoritos
     public void voltaPrincipalFavoritos(){
         telaFavoritos.dispose();
         
@@ -78,7 +62,6 @@ public class ControllerNavegacao {
     
     }
      
-    
     public void abrirListaReproducao(){
         telaFavoritos.dispose();
         
@@ -99,6 +82,30 @@ public class ControllerNavegacao {
         telaFavoritos = new TelaFavoritos(this);
         telaFavoritos.setVisible(true);
     }
+    
+    // Funções dos botões de sair 
+    //sai dos favoritos
+    public void voltaLoginFavoritos(){
+        telaFavoritos.dispose();
+        
+        telaLogin = new TelaLogin(this);
+        telaLogin.setVisible(true);
+    }
+    //sai da tela principal
+    public void voltarLoginPrincipal() {
+       telaPrincipal.dispose();
+
+        telaLogin = new TelaLogin(this);
+        telaLogin.setVisible(true);
+    }
+    //sai da lista
+    public void voltaLoginLista(){
+        telaListaReproducao.dispose();
+        
+        telaLogin = new TelaLogin(this);
+        telaLogin.setVisible(true);
+    }
+    
             
 private Usuario usuarioLogado;
 

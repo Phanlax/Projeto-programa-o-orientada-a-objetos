@@ -4,16 +4,22 @@
  */
 package proj.projetofeitv.controller;
 
+import java.awt.Color;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 import proj.projetofeitv.dao.Conexao;
 import proj.projetofeitv.dao.CurtidaDAO;
 import proj.projetofeitv.dao.FavoritoDAO;
 import proj.projetofeitv.dao.FilmeDAO;
 import proj.projetofeitv.dao.ListaReproducaoDAO;
 import proj.projetofeitv.model.Filme;
+import proj.projetofeitv.view.TelaFavoritos;
+import proj.projetofeitv.view.TelaListaReproducao;
+import proj.projetofeitv.view.TelaPrincipal;
 
 /**
  *
@@ -60,7 +66,7 @@ public class ControllerFilme {
         }
     }
 
-    //funcãp de favoritar
+    //funcão de favoritar
     public void favoritar(int usuarioId, int filmeId) {
         try (Connection conn = new Conexao().getConnection()) {
 
@@ -93,7 +99,6 @@ public class ControllerFilme {
     public List<Filme> buscarFavoritos(int usuarioId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         FavoritoDAO dao = new FavoritoDAO(conn);
         return dao.buscarFavoritos(usuarioId);
 
@@ -106,7 +111,6 @@ public class ControllerFilme {
     public List<Filme> buscarListaReproducao(int usuarioId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         ListaReproducaoDAO dao = new ListaReproducaoDAO(conn);
         return dao.buscarLista(usuarioId);
 
@@ -119,7 +123,6 @@ public class ControllerFilme {
     public void adicionarLista(int usuarioId, int filmeId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         ListaReproducaoDAO dao = new ListaReproducaoDAO(conn);
         dao.adicionar(usuarioId, filmeId);
 
@@ -131,7 +134,6 @@ public class ControllerFilme {
     public void removerLista(int usuarioId, int filmeId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         ListaReproducaoDAO dao = new ListaReproducaoDAO(conn);
         dao.remover(usuarioId, filmeId);
 
@@ -143,9 +145,7 @@ public class ControllerFilme {
     public List<Filme> pesquisarFilmes(String texto) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         FilmeDAO dao = new FilmeDAO(conn);
-
         return dao.pesquisarFilmes(texto);
 
     } catch (SQLException e) {
@@ -153,13 +153,12 @@ public class ControllerFilme {
         e.printStackTrace();
         return new ArrayList<>();
     }
+    
 }   // ve se ja favoritou
     public boolean jaFavoritou(int usuarioId, int filmeId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         FavoritoDAO dao = new FavoritoDAO(conn);
-
         return dao.jaFavoritou(usuarioId, filmeId);
 
     } catch (SQLException e) {
@@ -172,9 +171,7 @@ public class ControllerFilme {
     public boolean jaCurtiu(int usuarioId, int filmeId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         CurtidaDAO dao = new CurtidaDAO(conn);
-
         return dao.jaCurtiu(usuarioId, filmeId);
 
     } catch (SQLException e) {
@@ -187,9 +184,7 @@ public class ControllerFilme {
     public void removerCurtida(int usuarioId, int filmeId) {
 
     try (Connection conn = new Conexao().getConnection()) {
-
         CurtidaDAO dao = new CurtidaDAO(conn);
-
         dao.removerCurtida(usuarioId, filmeId);
 
     } catch (SQLException e) {
@@ -197,5 +192,146 @@ public class ControllerFilme {
         e.printStackTrace();
     }
 }
+ public void pesquisar(
+        JTextField caixaBusca,
+        TelaPrincipal tela) {
+
+    String texto =
+        caixaBusca.getText();
+
+    List<Filme> filmes =
+        pesquisarFilmes(texto);
+
+    tela.carregarCards(filmes);
+}
+    
+    // Funções referentes aso Cards dos filme e botões
+    public void atualizarVisualCurtida(
+        int usuarioId,
+        int filmeId,
+        JButton btnCurtir) {
+
+    boolean curtiu =
+        jaCurtiu(usuarioId, filmeId);
+
+    if (curtiu) {
+
+        btnCurtir.setBackground(
+            new Color(100, 180, 255)
+        );
+
+    } else {
+
+        btnCurtir.setBackground(null);
+    }
+}
+    public void atualizarVisualFavorito(
+        int usuarioId,
+        int filmeId,
+        JButton btnFavorito) {
+
+    boolean favoritado =
+        jaFavoritou(usuarioId, filmeId);
+
+    if (favoritado) {
+
+        btnFavorito.setBackground(
+            new Color(220, 60, 60)
+        );
+
+    } else {
+
+        btnFavorito.setBackground(null);
+    }
+}
+    public void acaoCurtir(
+        int usuarioId,
+        Filme f,
+        JButton btnCurtir) {
+
+    if (jaCurtiu(usuarioId, f.getId())) {
+
+        removerCurtida(
+            usuarioId,
+            f.getId()
+        );
+
+        btnCurtir.setBackground(null);
+
+    } else {
+
+        curtir(
+            usuarioId,
+            f.getId()
+        );
+
+        btnCurtir.setBackground(new Color(100, 180, 255)
+        );
+    }
+
+    int novasCurtidas = getCurtidas(f.getId());
+
+    btnCurtir.setText(
+        "👍 " + novasCurtidas
+    );
+}
+    public void acaoFavorito(
+        int usuarioId,
+        Filme f,
+        JButton btnFavorito) {
+
+    if (jaFavoritou(usuarioId, f.getId())) {
+
+        removerFavorito(
+            usuarioId,
+            f.getId()
+        );
+
+        btnFavorito.setBackground(null);
+
+    } else {
+        favoritar(
+            usuarioId,
+            f.getId()
+        );
+
+        btnFavorito.setBackground(new Color(220, 60, 60)
+        );
+    }
+}
+    public void acaoRemoverFavorito(
+        int usuarioId,
+        Filme f,
+        TelaFavoritos tela) {
+        
+    removerFavorito(
+        usuarioId,
+        f.getId()
+    );
+
+    tela.carregarCards();
+}
+    public void acaoAdicionarLista(
+        int usuarioId,
+        Filme f) {
+
+    adicionarLista(
+        usuarioId,
+        f.getId()
+    );
+}
+    public void acaoRemoverLista(
+        int usuarioId,
+        Filme f,
+        TelaListaReproducao tela) {
+
+    removerLista(
+        usuarioId,
+        f.getId()
+    );
+
+    tela.carregarCards();
+}
+    
     
 }
