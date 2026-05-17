@@ -68,7 +68,7 @@ O sistema utiliza:
 - Integração Java + PostgreSQL
 ## Funcionamento do programa
 ### Diagrama de classes
-<img width="1100" height="1000" alt="Diagrama de Classes do projeto atualizado" src="https://github.com/user-attachments/assets/9836b973-4b99-4d85-9db0-77598db21c49" />
+<img width="1100" height="800" alt="Diagrama de Classes do projeto atualizado" src="https://github.com/user-attachments/assets/9836b973-4b99-4d85-9db0-77598db21c49" />
 
 
 ## Explicação do Funcionamento    
