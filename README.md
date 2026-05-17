@@ -1,3 +1,4 @@
+<img width="1536" height="1024" alt="Diagrama de Classes do projeto atualizado" src="https://github.com/user-attachments/assets/8bf33494-f69e-47c4-94fd-3600f9c71770" />
 # 🎬 ProjetoFeitv
 
 Sistema desktop de filmes desenvolvido em Java com interface gráfica Swing e banco de dados PostgreSQL.
@@ -68,7 +69,8 @@ O sistema utiliza:
 - Integração Java + PostgreSQL
 ## Funcionamento do programa
 ### Diagrama de classes
-<img width="1000" height="715" alt="image" src="https://github.com/user-attachments/assets/3446062e-df28-47d8-bd01-b53834efbd90" />
+<img width="1100" height="1000" alt="Diagrama de Classes do projeto atualizado" src="https://github.com/user-attachments/assets/9836b973-4b99-4d85-9db0-77598db21c49" />
+
 
 ## Explicação do Funcionamento    
 ### Cadastro e Login
